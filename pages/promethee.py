@@ -4,7 +4,6 @@ import numpy as np
 
 st.title("MCDM with PROMETHEE Method")
 
-# === Initialize Session State ===
 if "page" not in st.session_state:
     st.session_state.page = "criteria_input"
 if "criteria_with_weights" not in st.session_state:
@@ -12,7 +11,7 @@ if "criteria_with_weights" not in st.session_state:
 if "suppliers" not in st.session_state:
     st.session_state.suppliers = []
 
-# === PAGE 1: INPUT CRITERIA ===
+# PAGE 1: Input kriteria
 if st.session_state.page == "criteria_input":
     st.header("Step 1: Define Criteria and Weights")
     col1, col2 = st.columns([2, 1])
@@ -45,9 +44,9 @@ if st.session_state.page == "criteria_input":
         if st.button("Next"):
             st.session_state.page = "edit_criteria"
 
-# === PAGE 2: DEFINE LEVELS ===
+# Page 2 Weight setiap kriteria
 elif st.session_state.page == "edit_criteria":
-    st.header("Step 2: Define Levels for Each Criterion")
+    st.header("Step 2: Define Weigth for Each Criterion")
 
     for idx, criterion in enumerate(st.session_state.criteria_with_weights):
         with st.expander(f"{criterion['name']} (Weight: {criterion['weight']})"):
@@ -76,7 +75,7 @@ elif st.session_state.page == "edit_criteria":
     if st.button("Next: Add Suppliers"):
         st.session_state.page = "input_alternatives"
 
-# === PAGE 3: INPUT SUPPLIERS ===
+# Page 3 Input Supplier
 elif st.session_state.page == "input_alternatives":
     st.header("Step 3: Add Suppliers and Assign Levels")
 
@@ -110,7 +109,7 @@ elif st.session_state.page == "input_alternatives":
     if st.button("Show Evaluation Matrix"):
         st.session_state.page = "show_results"
 
-# === PAGE 4: SHOW RESULTS ===
+# Page 4 Hasil Promethee
 elif st.session_state.page == "show_results":
     st.header("Step 4: Evaluation Matrix")
 
@@ -171,8 +170,7 @@ elif st.session_state.page == "show_results":
     preference_df = pd.DataFrame(preference_matrix, index=suppliers, columns=suppliers)
     st.dataframe(preference_df.style.format(precision=3), use_container_width=True)
 
-    # PROMETHEE calculation
-       # PROMETHEE calculation
+
     suppliers = row_labels
     n = len(suppliers)
     weights = {c["name"]: c["weight"] / 100 for c in st.session_state.criteria_with_weights}
@@ -228,6 +226,5 @@ elif st.session_state.page == "show_results":
                     })
             st.dataframe(pd.DataFrame(table), use_container_width=True)
 
-    # === Final Output: PROMETHEE Results Table ===
     st.subheader("Final PROMETHEE Ranking")
     st.dataframe(result_df.style.format(precision=3), use_container_width=True)
