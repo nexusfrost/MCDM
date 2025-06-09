@@ -134,7 +134,7 @@ elif st.session_state.page == "show_results":
     
     display_df = df.copy()
     renamed_columns = {
-        criterion["name"]: f"{criterion['name']} ({ ['weight']}%)"
+        criterion["name"]: f"{criterion['name']} ({criterion['weight']}%)"
         for criterion in st.session_state.criteria_with_weights
     }
     display_df.rename(columns=renamed_columns, inplace=True)
