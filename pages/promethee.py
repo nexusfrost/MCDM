@@ -131,9 +131,16 @@ elif st.session_state.page == "show_results":
         matrix_data.append(row)
 
     df = pd.DataFrame(matrix_data, index=row_labels)
+    
+    display_df = df.copy()
+    renamed_columns = {
+        criterion["name"]: f"{criterion['name']} ({ ['weight']}%)"
+        for criterion in st.session_state.criteria_with_weights
+    }
+    display_df.rename(columns=renamed_columns, inplace=True)
 
     st.subheader("Evaluation Matrix")
-    st.dataframe(df.style.format(precision=2), use_container_width=True)
+    st.dataframe(display_df.style.format(precision=2), use_container_width=True)
 
     # === Compute Pairwise Preference Index Matrix ===
     st.subheader("Preference Index Matrix (PROMETHEE)")
